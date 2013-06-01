@@ -24,6 +24,10 @@ class PoormanTwitter
     @access_token = OAuth::AccessToken.from_hash(consumer, token_hash)
   end
 
+  def search_tweets(q)
+    make_request({ :endpoint => "search/tweets.json?q=#{q}" })
+  end
+
   def home_timeline
     make_request({ :endpoint => "statuses/home_timeline.json" })
   end
@@ -61,6 +65,8 @@ class PoormanTwitter
     options.reverse_merge!({
       :method => :get
     })
+
+    puts options
 
     res = @access_token.request(
       options[:method],

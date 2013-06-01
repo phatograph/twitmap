@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @tweets = twitter.home_timeline.map { |t| t['text'] }
+    puts I18n.translate('raining', :locale => :th)
+    @tweets = twitter.search_tweets('rain')['statuses'].map { |t| t['text'] }
   end
 end
