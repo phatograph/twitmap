@@ -74,6 +74,8 @@ class PoormanTwitter
       options[:data]
     )
 
+    puts 'Done!'
+
     # res.code
     # res.message
     # res.body

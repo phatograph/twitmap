@@ -25,41 +25,57 @@ $(document).ready(function() {
     lng: LON
   });
 
-  function populateTweets(tweets){
-    var navbarString = "";
+  function getTweetBoxString (tweet) {
+    return "<a class='box' id='tb-" + tweet.id + "' href='#'>\
+      <table>\
+        <tr>\
+          <td>\
+            <p>" + tweet.text + "</p>\
+            <h5>" + tweet.created_at + "</h5>\
+            <h4>" + tweet.user.name + "</h4>\
+          </td>\
+          <td class='icon'>\
+            <i class='icon-double-angle-right'></i>\
+          </td>\
+        </tr>\
+      </table>\
+    </a>";
+  }
+
+  function populateTweets(tweets) {
+    var navItem;
+    var target = $('.map .info');
 
     $.each(tweets, function (key, tweet) {
-      if (tweet.geo) {
-        navbarString += "<a class='box' id='tb-" + tweet.id + "' href='#'>\
-          <table>\
-            <tr>\
-              <td>\
-                <p>" + tweet.text + "</p>\
-                <h5>" + tweet.created_at + "</h5>\
-                <h4>" + tweet.user.name + "</h4>\
-              </td>\
-              <td class='icon'>\
-                <i class='icon-double-angle-right'></i>\
-              </td>\
-            </tr>\
-          </table>\
-        </a>"
-
-        map.addMarker({
-          lat: tweet.geo.coordinates[0],
-          lng: tweet.geo.coordinates[1],
-          infoWindow: {
-            content: '<div class="t-result">' + tweet.text + '</div>'
-          },
-          click: function () {
-            $('.info a.box').removeClass('active');
-            $('#tb-' + tweet.id).addClass('active').focus();
-          }
-        });
+      if (tweet.geo && !$('#tb-' + tweet.id).length) {
+        navItem = $(getTweetBoxString(tweet));
+        marker = addMarker(tweet);
+        navItem.get(0).onclick = generateTriggerCallback(marker, 'click');
+        target.prepend(navItem);
       }
     });
+  }
 
-    $('.map .info').html(navbarString);
+  function addMarker (tweet) {
+    // Return the added marker for reference back
+    return map.addMarker({
+      lat: tweet.geo.coordinates[0],
+      lng: tweet.geo.coordinates[1],
+      infoWindow: {
+        content: '<div class="t-result">' + tweet.text + '</div>'
+      },
+      click: function () {
+        $('.info a.box').removeClass('active');
+        $('#tb-' + tweet.id).addClass('active').focus();
+      }
+    });
+  }
+
+  function generateTriggerCallback (object, eventType) {
+    return function() {
+      google.maps.event.trigger(object, eventType);
+      return false;
+    };
   }
 
   GMaps.geolocate({
@@ -78,29 +94,40 @@ $(document).ready(function() {
     }
   });
 
+  function getTweets () {
+    console.log('Getting tweet ..');
+    var q = $('#search').val();
+
+    $.ajax({
+      type: "GET",
+      url: "/tweets.json",
+      data: "q=" + q + "&geocode=" + LAT + "," + LON + ",10km",
+      success: function(tweets){
+        console.log('Done!');
+
+        $('#searchBtn').removeAttr('disabled');
+        $('table.loader').hide();
+
+        populateTweets(tweets);
+        // Recursive call, resulting in fake live reload
+        // setTimeout(getTweets, 5000);
+      }
+    });
+  }
+
   $(document)
     .on('click', '#searchBtn', function (e) {
       e.preventDefault();
       var q = $('#search').val();
-      var btn = $(this);
 
       if (q) {
-        btn.attr('disabled', true);
+        $('#searchBtn').attr('disabled', true);
         $('.map .info')
           .html('<table class="loader" style="display: none;"><tr><td><p class="loader">Loading ..</p></td></tr></table>')
           .find('.loader').fadeIn();
         map.removeMarkers();
 
-        $.ajax({
-          type: "GET",
-          url: "/tweets.json",
-          data: "q=" + q + "&geocode=" + LAT + "," + LON + ",10km",
-          success: function(tweets){
-            console.log('done!');
-            btn.removeAttr('disabled');
-            populateTweets(tweets);
-          }
-        });
+        getTweets();
       }
     });
 
