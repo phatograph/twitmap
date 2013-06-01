@@ -3,6 +3,7 @@ Tweather::Application.routes.draw do
   root :to => 'home#index'
 
   resources :tweets, only: :index
+  get 'trends_closest' => 'tweets#trends_closest'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -9,4 +9,9 @@ class TweetsController < ApplicationController
     end
     respond_with @tweets
   end
+
+  def trends_closest
+    @trends = twitter.trends_closet(params[:lat], params[:long])
+    respond_with @trends
+  end
 end

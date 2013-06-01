@@ -22,7 +22,8 @@ $(document).ready(function() {
   var map = new GMaps({
     div: '#map',
     lat: LAT,
-    lng: LON
+    lng: LON,
+    zoom: 12
   });
 
   function getTweetBoxString (tweet) {
@@ -45,6 +46,8 @@ $(document).ready(function() {
   function populateTweets(tweets) {
     var navItem;
     var target = $('.map .info');
+
+    tweets.reverse();
 
     $.each(tweets, function (key, tweet) {
       if (tweet.geo && !$('#tb-' + tweet.id).length) {
@@ -85,6 +88,18 @@ $(document).ready(function() {
 
       map.setCenter(position.coords.latitude, position.coords.longitude);
       map.setZoom(12);
+      map.addMarker({
+        lat: LAT,
+        lng: LON,
+        icon: 'http://asset.phatograph.com/images/oozou-angelhack.png'
+      });
+      // map.drawCircle({
+      //   lat: LAT,
+      //   lng: LON,
+      //   radius: 5000,
+      //   fillOpacity: 0.2,
+      //   strokeOpacity: 0.2
+      // });
     },
     error: function(error) {
       alert('Geolocation failed: ' + error.message);
@@ -101,7 +116,7 @@ $(document).ready(function() {
     $.ajax({
       type: "GET",
       url: "/tweets.json",
-      data: "q=" + q + "&geocode=" + LAT + "," + LON + ",10km",
+      data: "q=" + q + "&geocode=" + LAT + "," + LON + ",5km",
       success: function(tweets){
         console.log('Done!');
 

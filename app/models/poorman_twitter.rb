@@ -25,7 +25,11 @@ class PoormanTwitter
   end
 
   def search_tweets(q)
-    make_request({ :endpoint => "search/tweets.json?q=#{q}&count=100" })
+    make_request({ :endpoint => "search/tweets.json?q=#{q}&count=100&result_type=recent&include_entities=false" })
+  end
+
+  def trends_closet(lat, long)
+    make_request({ :endpoint => "trends/available.json" })
   end
 
   def home_timeline
