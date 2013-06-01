@@ -1,6 +1,6 @@
-%ul
-  - @tweets.each do |tweet|
-    %li= tweet['geo']
+%p.grand-info
+  People tweet, but where there are ?<br />
+  Let's check out some near you!
 
 %form.form-search
   %input.input-medium.search-query{:type => "text", :placeholder => 'Enter search text'}
@@ -8,16 +8,15 @@
 
 .map
   .info
-    - 3.times do
-      .box
-        %a{:href => '#'}
-          %table
-            %tr
-              %td
-                %h4 Name
-                %p
-                  Some status here
-              %td.icon
-                %i.icon-double-angle-right
+    - 20.times do
+      %a.box{:href => '#'}
+        %table
+          %tr
+            %td
+              %h4 Name
+              %p
+                Some status here
+            %td.icon
+              %i.icon-double-angle-right
 
   #map{style: "height:500px;"}

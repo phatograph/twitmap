@@ -12,17 +12,23 @@
 
 body {
   font-family: 'Alef', sans-serif;
+  background: image-url('light_wool.png');
 }
 
 h1 {
   text-align: center;
-  padding: 40px 0;
+  padding: 40px 0 0;
   font-size: 48px;
   font-style: bold;
 
   a {
     color: #333;
   }
+}
+
+p.grand-info {
+  text-align: center;
+  padding: 20px 0 20px;
 }
 
 form.form-search {
@@ -43,55 +49,59 @@ form.form-search {
 .map {
   @include box-shadow(#ccc 0px 0px 20px);
   $info-width: 250px;
-
   border: 1px solid #CCC;
 
   .info {
     float: left;
     width: $info-width;
     height: 500px;
+    overflow-y: scroll;
     border-right: 1px solid #CCC;
+    background-color: #fff;
 
-    .box {
-      a {
-        @include transition(all 0.3s);
-        display: block;
-        text-decoration: none;
-        color: #333;
-        border-bottom: 1px solid #CCC;
+    a.box {
+      @include transition(all 0.3s);
+      display: block;
+      text-decoration: none;
+      color: #333;
+      border-bottom: 1px solid #CCC;
 
-        &:hover {
-          background: #f7f7f7;
+      &:hover {
+        @include box-shadow(#eee 0px 0px 5px inset);
+        background: #f7f7f7;
 
-          td.icon {
-            @include opacity(100);
-          }
+        td.icon {
+          @include opacity(100);
         }
+      }
 
-        table {
-          width: 100%;
+      &:last-child {
+        border-bottom: 0;
+      }
 
-          td {
-            padding: 15px;
-            vertical-align: middle;
+      table {
+        width: 100%;
 
-            h4 {
-              margin: 0 0 5px;
-            }
+        td {
+          padding: 15px;
+          vertical-align: middle;
 
-            p {
-              margin: 0;
-            }
+          h4 {
+            margin: 0 0 5px;
+          }
 
-            &.icon {
-              @include transition(all 0.3s);
-              @include opacity(0);
-              padding: 0px;
+          p {
+            margin: 0;
+          }
 
-              i {
-                font-size: 20px;
-                color: #777;
-              }
+          &.icon {
+            @include transition(all 0.3s);
+            @include opacity(0);
+            padding: 0px;
+
+            i {
+              font-size: 20px;
+              color: #777;
             }
           }
         }
