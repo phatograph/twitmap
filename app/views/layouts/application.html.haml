@@ -1,0 +1,40 @@
+!!! 5
+%html(lang="en")
+  %head
+    %meta(charset="utf-8")
+    %meta(http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1")
+    %meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    %title= content_for?(:title) ? yield(:title) : "Twlist"
+    / %script(src='//use.typekit.net/lxv0fmz.js')
+    / %script try{Typekit.load();}catch(e){}
+    = csrf_meta_tags
+    / Le HTML5 shim, for IE6-8 support of HTML elements
+    /[if lt IE 9]
+      = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
+    = stylesheet_link_tag "application", :media => "all"
+
+    - if Rails.env.production?
+      %link(href="/assets/favicon.ico" rel="shortcut icon")
+
+    = include_gon
+    = javascript_include_tag "application"
+
+  %body
+    .container
+      - [:notice, :error, :success, :info, :alert].each do |key|
+        - if flash[key].present?
+          %div{class: "alert alert-#{key}"}
+            / %button{type: 'button', class:'close', data: {dismiss: 'alert'}} x
+            = flash[key]
+      = yield
+      %footer
+        %p
+          %a(href="https://twitter.com/share" class="twitter-share-button" data-via="phatograph" data-lang="en" data-url="#{root_url}") Tweet
+          %a(href="https://twitter.com/phatograph" class="twitter-follow-button" data-show-count="false") Follow @phatograph
+        %p
+          Twlist &copy; 2013.
+          = link_to 'phatograph.com', 'http://phatograph.com'
+
+    - if Rails.env.production?
+      %script
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
