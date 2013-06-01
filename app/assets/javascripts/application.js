@@ -20,22 +20,52 @@ $(document).ready(function() {
   GMaps.geolocate({
     success: function(position) {
       map.setCenter(position.coords.latitude, position.coords.longitude);
+      $.ajax({
+        type: "GET",
+        url: "/tweets.json",
+        data: "geocode="+position.coords.latitude+","+position.coords.longitude+",3km",
+        success: function(tweets){
+          tweets.each
+          $.each( tweets, function( key, tweet ) {
+            console.log(tweet);
+            if(tweet.geo){
+              map.addMarker({
+                lat: tweet.geo.coordinates[0],
+                lng: tweet.geo.coordinates[1],
+                title: 'tweet',
+                click: function(e) {
+                  alert('tweet');
+                }
+              });
+            };
+          });
+
+        }
+      });
+
     },
     error: function(error) {
       alert('Geolocation failed: '+error.message);
     },
     not_supported: function() {
       alert("Your browser does not support geolocation");
-    },
-    always: function() {
-      alert("Done!");
     }
+    // ,
+    // always: function() {
+    //   alert("Done!");
+    // }
   });
 
   var map = new GMaps({
     div: '#map',
     lat: -12.043333,
-    lng: -77.028333
+    lng: -77.028333,
+    // lat: 13.737467,
+    // lng: 100.560501,
+    markers: gon.tweet_geos,
+    click: function(e) {
+      alert('click');
+    }
   });
 
 });
