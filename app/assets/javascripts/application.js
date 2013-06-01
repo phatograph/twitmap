@@ -60,9 +60,6 @@ $(document).ready(function() {
     div: '#map',
     lat: -12.043333,
     lng: -77.028333,
-    // lat: 13.737467,
-    // lng: 100.560501,
-    markers: gon.tweet_geos,
     click: function(e) {
       alert('click');
     }
