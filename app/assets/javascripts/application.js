@@ -12,5 +12,14 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require GMaps-034
+//= require GMaps-043
 //= require_tree .
+
+$(document).ready(function() {
+  var map = new GMaps({
+    div: '#map',
+    lat: -12.043333,
+    lng: -77.028333
+  });
+
+});
