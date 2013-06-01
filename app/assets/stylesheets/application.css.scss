@@ -65,7 +65,9 @@ form.form-search {
       text-decoration: none;
       color: #333;
       border-bottom: 1px solid #CCC;
+      outline: 0;
 
+      &.active,
       &:hover {
         @include box-shadow(#eee 0px 0px 5px inset);
         background: #f7f7f7;
@@ -87,9 +89,17 @@ form.form-search {
           vertical-align: middle;
 
           h4 {
-            margin: 5px 0;
+            margin: 0 0 5px;
             font-size: 12px;
             color: #777;
+          }
+
+          h5 {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #333;
+            padding-top: 5px;
+            border-top: 1px solid #f1f1f1;
           }
 
           p {

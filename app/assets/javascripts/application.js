@@ -30,18 +30,19 @@ $(document).ready(function() {
 
     $.each(tweets, function (key, tweet) {
       if (tweet.geo) {
-        navbarString += "<a class=\"box\" href=\"#\">\
+        navbarString += "<a class='box' id='tb-" + tweet.id + "' href='#'>\
           <table>\
-            <tbody><tr>\
+            <tr>\
               <td>\
                 <p>" + tweet.text + "</p>\
+                <h5>" + tweet.created_at + "</h5>\
                 <h4>" + tweet.user.name + "</h4>\
               </td>\
-              <td class=\"icon\">\
-                <i class=\"icon-double-angle-right\"></i>\
+              <td class='icon'>\
+                <i class='icon-double-angle-right'></i>\
               </td>\
             </tr>\
-          </tbody></table>\
+          </table>\
         </a>"
 
         map.addMarker({
@@ -49,18 +50,16 @@ $(document).ready(function() {
           lng: tweet.geo.coordinates[1],
           infoWindow: {
             content: '<div class="t-result">' + tweet.text + '</div>'
+          },
+          click: function () {
+            $('.info a.box').removeClass('active');
+            $('#tb-' + tweet.id).addClass('active').focus();
           }
         });
       }
     });
 
     $('.map .info').html(navbarString);
-  }
-
-  function addMarker(tweet) {
-  }
-
-  function addNavBarItem(tweet) {
   }
 
   GMaps.geolocate({
@@ -104,4 +103,6 @@ $(document).ready(function() {
         });
       }
     });
+
+  $('#search').focus();
 });
