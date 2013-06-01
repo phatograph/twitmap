@@ -4,7 +4,7 @@
     %meta(charset="utf-8")
     %meta(http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1")
     %meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    %title= content_for?(:title) ? yield(:title) : "Twlist"
+    %title= content_for?(:title) ? yield(:title) : "Twitmap"
     / %script(src='//use.typekit.net/lxv0fmz.js')
     / %script try{Typekit.load();}catch(e){}
     = csrf_meta_tags
@@ -27,14 +27,18 @@
           %div{class: "alert alert-#{key}"}
             / %button{type: 'button', class:'close', data: {dismiss: 'alert'}} x
             = flash[key]
+
+      %h1
+        = link_to 'Twitmap', root_url
+        %small &beta;
+
       = yield
+
       %footer
         %p
-          %a(href="https://twitter.com/share" class="twitter-share-button" data-via="phatograph" data-lang="en" data-url="#{root_url}") Tweet
-          %a(href="https://twitter.com/phatograph" class="twitter-follow-button" data-show-count="false") Follow @phatograph
-        %p
-          Twlist &copy; 2013.
-          = link_to 'phatograph.com', 'http://phatograph.com'
+          Twitmap @
+          = link_to 'hackaton.io', 'http://www.hackathon.io/tweather'
+          &copy; 2013.
 
     - if Rails.env.production?
       %script

@@ -2,4 +2,22 @@
   - @tweets.each do |tweet|
     %li= tweet['geo']
 
-#map{style: "height:500px;"}
+%form.form-search
+  %input.input-medium.search-query{:type => "text", :placeholder => 'Enter search text'}
+  %button.btn{:type => "submit"} Search
+
+.map
+  .info
+    - 3.times do
+      .box
+        %a{:href => '#'}
+          %table
+            %tr
+              %td
+                %h4 Name
+                %p
+                  Some status here
+              %td.icon
+                %i.icon-double-angle-right
+
+  #map{style: "height:500px;"}

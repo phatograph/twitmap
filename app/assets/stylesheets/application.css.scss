@@ -3,10 +3,113 @@
  //= require_tree .
  //= require_self
 
+ @import "compass/css3";
+ @import url(http://fonts.googleapis.com/css?family=Alef:400,700);
+ @import url(//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css);
+ @import url(//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css);
+
+// MAIN
+
+body {
+  font-family: 'Alef', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  padding: 40px 0;
+  font-size: 48px;
+  font-style: bold;
+
+  a {
+    color: #333;
+  }
+}
+
+form.form-search {
+  text-align: center;
+  padding-bottom: 50px;
+  margin-bottom: 0;
+
+  input[type="text"] {
+    width: 200px;
+    text-align: center;
+  }
+
+  button {
+    margin-left: 5px;
+  }
+}
+
+.map {
+  @include box-shadow(#ccc 0px 0px 20px);
+  $info-width: 250px;
+
+  border: 1px solid #CCC;
+
+  .info {
+    float: left;
+    width: $info-width;
+    height: 500px;
+    border-right: 1px solid #CCC;
+
+    .box {
+      a {
+        @include transition(all 0.3s);
+        display: block;
+        text-decoration: none;
+        color: #333;
+        border-bottom: 1px solid #CCC;
+
+        &:hover {
+          background: #f7f7f7;
+
+          td.icon {
+            @include opacity(100);
+          }
+        }
+
+        table {
+          width: 100%;
+
+          td {
+            padding: 15px;
+            vertical-align: middle;
+
+            h4 {
+              margin: 0 0 5px;
+            }
+
+            p {
+              margin: 0;
+            }
+
+            &.icon {
+              @include transition(all 0.3s);
+              @include opacity(0);
+              padding: 0px;
+
+              i {
+                font-size: 20px;
+                color: #777;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #map {
+    padding-left: $info-width;
+  }
+}
+
 footer {
   text-align: center;
   padding: 50px 0
 }
+
+// FORMS
 
 #error_explanation {
   @extend .alert;
