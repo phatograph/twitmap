@@ -87,7 +87,9 @@ form.form-search {
           vertical-align: middle;
 
           h4 {
-            margin: 0 0 5px;
+            margin: 5px 0;
+            font-size: 12px;
+            color: #777;
           }
 
           p {
@@ -95,9 +97,13 @@ form.form-search {
           }
 
           &.icon {
-            @include transition(all 0.3s);
+            // Bug when move a mouse while scroll
+            // @include transition(all 0.3s);
             @include opacity(0);
-            padding: 0px;
+            padding: 0;
+            width: 25px;
+            text-align: center;
+            background: #e5e5e5;
 
             i {
               font-size: 20px;
@@ -115,10 +121,13 @@ form.form-search {
       text-align: center;
 
       p {
-        background: image-url('ajax-loader.gif') center top no-repeat;
-        padding-top: 16 + 5px;
         font-size: 12px;
         font-weight: bold;
+
+        &.loader {
+          background: image-url('ajax-loader.gif') center top no-repeat;
+          padding-top: 16 + 5px;
+        }
       }
     }
   }
