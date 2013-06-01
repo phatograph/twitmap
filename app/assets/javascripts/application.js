@@ -17,52 +17,61 @@
 
 $(document).ready(function() {
 
+  var LAT = 13.711901;
+  var LON = 100.581809;
+
+  var map = new GMaps({
+    div: '#map',
+    lat: LAT,
+    lng: LON
+  });
+
   GMaps.geolocate({
-    success: function(position) {
+    success: function (position) {
+      LAT = position.coords.latitude;
+      LON = position.coords.longitude;
+
       map.setCenter(position.coords.latitude, position.coords.longitude);
-      $.ajax({
-        type: "GET",
-        url: "/tweets.json",
-        data: "geocode="+position.coords.latitude+","+position.coords.longitude+",3km",
-        success: function(tweets){
-          tweets.each
-          $.each( tweets, function( key, tweet ) {
-            console.log(tweet);
-            if(tweet.geo){
-              map.addMarker({
-                lat: tweet.geo.coordinates[0],
-                lng: tweet.geo.coordinates[1],
-                title: 'tweet',
-                click: function(e) {
-                  alert('tweet');
-                }
-              });
-            };
-          });
-
-        }
-      });
-
+      map.setZoom(12);
     },
     error: function(error) {
-      alert('Geolocation failed: '+error.message);
+      alert('Geolocation failed: ' + error.message);
     },
     not_supported: function() {
       alert("Your browser does not support geolocation");
     }
-    // ,
-    // always: function() {
-    //   alert("Done!");
-    // }
   });
 
-  var map = new GMaps({
-    div: '#map',
-    lat: -12.043333,
-    lng: -77.028333,
-    click: function(e) {
-      alert('click');
-    }
-  });
+  $(document)
+    .on('click', '#searchBtn', function (e) {
+      e.preventDefault();
+      var q = $('#search').val();
 
+      if (q) {
+        $('table.loader').fadeIn();
+        map.removeMarkers();
+
+        $.ajax({
+          type: "GET",
+          url: "/tweets.json",
+          data: "q=" + q + "&geocode=" + LAT + "," + LON + ",3km",
+          success: function(tweets){
+            console.log('done!');
+            console.log(tweets.map(function (t) { t.geo }));
+            $.each( tweets, function( key, tweet ) {
+              if (tweet.geo){
+                console.log(tweet.geo);
+                map.addMarker({
+                  lat: tweet.geo.coordinates[0],
+                  lng: tweet.geo.coordinates[1],
+                  infoWindow: {
+                    content: tweet.text
+                  }
+                });
+              };
+            });
+          }
+        });
+      }
+    });
 });

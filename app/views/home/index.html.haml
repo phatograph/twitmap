@@ -3,12 +3,17 @@
   Let's check out some near you!
 
 %form.form-search
-  %input.input-medium.search-query{:type => "text", :placeholder => 'Enter search text'}
-  %button.btn{:type => "submit"} Search
+  %input#search.input-medium.search-query{:type => "text", :placeholder => 'Enter search text'}
+  %button#searchBtn.btn{:type => "submit"} Search
 
 .map
   .info
-    - 20.times do
+    %table.loader
+      %tr
+        %td
+          %p Loading
+
+    - 0.times do
       %a.box{:href => '#'}
         %table
           %tr
