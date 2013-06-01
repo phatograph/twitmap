@@ -31,10 +31,12 @@ $(document).ready(function() {
       <table>\
         <tr>\
           <td>\
-            <img src='" + tweet.user.profile_image_url + "' alt='" + tweet.user.name + "' height='42' width='42'>\
-            <span>" + tweet.text + "</span>\
-            <h5>" + tweet.created_at + "</h5>\
-            <h4>" + tweet.user.name + "</h4>\
+            <p>" + tweet.text + "</p>\
+            <div class='poster'>\
+              <img src='" + tweet.user.profile_image_url + "' alt='" + tweet.user.name + "' height='42' width='42'>\
+              <h5>" + tweet.created_at + "</h5>\
+              <h4>" + tweet.user.name + "</h4>\
+            </div>\
           </td>\
           <td class='icon'>\
             <i class='icon-double-angle-right'></i>\
@@ -66,7 +68,10 @@ $(document).ready(function() {
       lat: tweet.geo.coordinates[0],
       lng: tweet.geo.coordinates[1],
       infoWindow: {
-        content: '<div class="t-result">' + tweet.text + '</div>'
+        content: "<div class='t-result'>\
+          <img src='" + tweet.user.profile_image_url + "' alt='" + tweet.user.name + "' height='42' width='42'>\
+          <p>" + tweet.text + "</p>\
+        </div>"
       },
       click: function () {
         $('.info a.box').removeClass('active');
@@ -126,7 +131,7 @@ $(document).ready(function() {
 
         populateTweets(tweets);
         // Recursive call, resulting in fake live reload
-        // setTimeout(getTweets, 5000);
+        setTimeout(getTweets, 5000);
       }
     });
   }
@@ -141,7 +146,13 @@ $(document).ready(function() {
         $('.map .info')
           .html('<table class="loader" style="display: none;"><tr><td><p class="loader">Loading ..</p></td></tr></table>')
           .find('.loader').fadeIn();
+
         map.removeMarkers();
+        map.addMarker({
+          lat: LAT,
+          lng: LON,
+          icon: 'http://asset.phatograph.com/images/oozou-angelhack.png'
+        });
 
         getTweets();
       }

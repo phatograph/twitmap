@@ -88,22 +88,33 @@ form.form-search {
           padding: 15px;
           vertical-align: middle;
 
-          h4 {
-            margin: 0 0 5px;
-            font-size: 12px;
-            color: #777;
-          }
-
-          h5 {
-            margin: 5px 0 0;
-            font-size: 12px;
-            color: #333;
-            padding-top: 5px;
-            border-top: 1px solid #f1f1f1;
-          }
-
           p {
             margin: 0;
+          }
+
+          div.poster {
+            padding-top: 5px;
+            border-top: 1px solid #f1f1f1;
+            margin: 5px 0 0;
+
+            img {
+              float: left;
+              margin: 0 10px 10px 0;
+              border: 1px solid #f1f1f1;
+              padding: 3px;
+            }
+
+            h4 {
+              margin: 0;
+              font-size: 12px;
+              color: #777;
+            }
+
+            h5 {
+              margin: 0;
+              font-size: 12px;
+              color: #333;
+            }
           }
 
           &.icon {
@@ -151,6 +162,13 @@ form.form-search {
 
     .t-result {
       max-width: 200px;
+
+      img {
+        float: left;
+        margin: 0 10px 10px 0;
+        padding: 3px;
+        border: 1px solid #f1f1f1;
+      }
     }
   }
 }
