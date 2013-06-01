@@ -54,9 +54,12 @@ $(document).ready(function() {
 
     $.each(tweets, function (key, tweet) {
       if (tweet.geo && !$('#tb-' + tweet.id).length) {
+        var marker = addMarker(tweet);
         navItem = $(getTweetBoxString(tweet));
-        marker = addMarker(tweet);
-        navItem.get(0).onclick = generateTriggerCallback(marker, 'click');
+        navItem.on('click', function (e) {
+          e.preventDefault();
+          google.maps.event.trigger(marker, 'click');
+        });
         target.prepend(navItem);
       }
     });
