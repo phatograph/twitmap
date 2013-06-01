@@ -30,7 +30,8 @@ $(document).ready(function() {
       <table>\
         <tr>\
           <td>\
-            <p>" + tweet.text + "</p>\
+            <img src='" + tweet.user.profile_image_url + "' alt='" + tweet.user.name + "' height='42' width='42'>\
+            <span>" + tweet.text + "</span>\
             <h5>" + tweet.created_at + "</h5>\
             <h4>" + tweet.user.name + "</h4>\
           </td>\
