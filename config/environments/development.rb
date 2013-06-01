@@ -34,4 +34,7 @@ Tweather::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+  config.log_level = :fatal
+  # config.logger = Logger.new(STDOUT)
+  $stdout.sync = true
 end
