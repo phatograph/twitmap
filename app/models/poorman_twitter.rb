@@ -25,7 +25,7 @@ class PoormanTwitter
   end
 
   def search_tweets(q)
-    make_request({ :endpoint => "search/tweets.json?q=#{q}" })
+    make_request({ :endpoint => "search/tweets.json?q=#{q}&count=100" })
   end
 
   def home_timeline
