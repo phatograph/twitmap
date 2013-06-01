@@ -17,6 +17,45 @@
 
 $(document).ready(function() {
 
+  function addMarker(tweet) {
+    map.addMarker({
+      lat: tweet.geo.coordinates[0],
+      lng: tweet.geo.coordinates[1],
+      title: 'tweet',
+      click: function(e) {
+        alert('tweet');
+      }
+    });
+  }
+
+  function addNavBarItem(tweet) {
+    $('.map .info').append(
+        "<a class=\"box\" href=\"#\">\
+          <table>\
+            <tbody><tr>\
+              <td>\
+                <h4>" + tweet.user.name + "</h4>\
+                <p>" + tweet.text + "</p>\
+              </td>\
+              <td class=\"icon\">\
+                <i class=\"icon-double-angle-right\"></i>\
+              </td>\
+            </tr>\
+          </tbody></table>\
+        </a>"
+      );
+  }
+
+  function populateTweets(tweets){
+    $.each( tweets, function( key, tweet ) {
+      if(tweet.geo){
+        addNavBarItem(tweet);
+        addMarker(tweet);
+      };
+    });
+  }
+
+
   GMaps.geolocate({
     success: function(position) {
       map.setCenter(position.coords.latitude, position.coords.longitude);
@@ -25,21 +64,8 @@ $(document).ready(function() {
         url: "/tweets.json",
         data: "geocode="+position.coords.latitude+","+position.coords.longitude+",3km",
         success: function(tweets){
-          tweets.each
-          $.each( tweets, function( key, tweet ) {
-            console.log(tweet);
-            if(tweet.geo){
-              map.addMarker({
-                lat: tweet.geo.coordinates[0],
-                lng: tweet.geo.coordinates[1],
-                title: 'tweet',
-                click: function(e) {
-                  alert('tweet');
-                }
-              });
-            };
-          });
-
+          $('.map .info').html('')
+          populateTweets(tweets);
         }
       });
 
