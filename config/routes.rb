@@ -2,6 +2,8 @@ Tweather::Application.routes.draw do
 
   root :to => 'home#index'
 
+  resources :tweets, only: :index
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
