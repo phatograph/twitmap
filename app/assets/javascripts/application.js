@@ -82,19 +82,21 @@ $(document).ready(function() {
     </div>";
   }
 
-  function populateTweets(tweets) {
+  function populateTweets(tweets, currentTarget) {
     var navItem;
-    var target = $('.map .info');
+    var target = $('.' + currentTarget);
 
     $.each(tweets, function (key, tweet) {
-      if (tweet.geo && !$('#tb-' + tweet.id).length) {
+      if (target.length && tweet.geo && !$('#tb-' + tweet.id).length) {
         var marker = addMarker(tweet);
+
         navItem = $(getTweetBoxString(tweet));
         navItem.on('click', function (e) {
           // e.preventDefault();
           $('.info .box').removeClass('active');
           google.maps.event.trigger(marker, 'click');
         });
+
         target.append(navItem);
       }
     });
@@ -161,6 +163,10 @@ $(document).ready(function() {
     console.log('Getting tweet ..');
     var q = $('#search').val();
 
+    // Reset target class to append new search results
+    var currentSearch = 'q' + Date.now();
+    $('.map .info').get(0).className = 'info ' + currentSearch;
+
     $.ajax({
       type: "GET",
       url: "/tweets.json",
@@ -171,7 +177,7 @@ $(document).ready(function() {
         $('#searchBtn').removeAttr('disabled');
         $('table.loader').hide();
 
-        populateTweets(tweets);
+        populateTweets(tweets, currentSearch);
 
         // Recursive call, resulting in fake live reload
         if (recurseFunc) clearTimeout(recurseFunc);
@@ -197,6 +203,7 @@ $(document).ready(function() {
           .find('.loader').fadeIn();
 
         map.removeMarkers();
+        // Re-add marker of current location
         map.addMarker({
           lat: LAT,
           lng: LON,
