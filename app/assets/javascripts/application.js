@@ -175,7 +175,7 @@ $(document).ready(function() {
 
         // Recursive call, resulting in fake live reload
         if (recurseFunc) clearTimeout(recurseFunc);
-        recurseFunc = setTimeout(getTweets, 1000 * 60 * 0.5); // Minutes
+        recurseFunc = setTimeout(getTweets, 1000 * 10); // Seconds
       }
     });
   }
