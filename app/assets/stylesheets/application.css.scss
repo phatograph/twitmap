@@ -26,14 +26,20 @@ h1 {
   }
 }
 
-p.grand-info {
-  text-align: center;
-  padding: 20px 0 20px;
+p {
+  &.grand-info {
+    text-align: center;
+    padding: 20px 0 20px;
+  }
+
+  &.featured {
+    text-align: center;
+    padding: 15px 0 45px;
+  }
 }
 
 form.form-search {
   text-align: center;
-  padding-bottom: 50px;
   margin-bottom: 0;
 
   input[type="text"] {

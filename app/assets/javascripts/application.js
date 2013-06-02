@@ -181,6 +181,11 @@ $(document).ready(function() {
   }
 
   $(document)
+    .on('click', 'p.featured a', function (e) {
+      e.preventDefault();
+      $('#search').val($(this).text());
+      $('#searchBtn').click();
+    })
     .on('click', '#searchBtn', function (e) {
       e.preventDefault();
       var q = $('#search').val();
