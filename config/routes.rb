@@ -1,4 +1,4 @@
-Tweather::Application.routes.draw do
+Twitmap::Application.routes.draw do
 
   root :to => 'home#index'
 

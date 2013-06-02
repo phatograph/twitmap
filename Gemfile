@@ -12,6 +12,7 @@ gem 'haml-rails'
 gem 'gon'
 
 group :development do
+  gem 'rename'
   gem 'mailcatcher'
   gem 'pry'
   gem 'pry-doc'
