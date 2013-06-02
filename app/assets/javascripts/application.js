@@ -118,6 +118,7 @@ $(document).ready(function() {
     }
   });
 
+  var recurseFunc;
   function getTweets () {
     console.log('Getting tweet ..');
     var q = $('#search').val();
@@ -134,7 +135,8 @@ $(document).ready(function() {
 
         populateTweets(tweets);
         // Recursive call, resulting in fake live reload
-        setTimeout(getTweets, 5000);
+        if (recurseFunc) clearTimeout(recurseFunc);
+        recurseFunc = setTimeout(getTweets, 1000 * 60 * 0.5); // Minutes
       }
     });
   }
