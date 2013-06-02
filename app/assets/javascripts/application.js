@@ -15,6 +15,42 @@
 //= require GMaps-043
 //= require_tree .
 
+// Define: Linkify plugin
+(function($){
+
+  var url1 = /(^|&lt;|\s)(www\..+?\..+?)(\s|&gt;|$)/g,
+      url2 = /(^|&lt;|\s)(((https?|ftp):\/\/|mailto:).+?)(\s|&gt;|$)/g,
+
+      linkifyThis = function () {
+        var childNodes = this.childNodes,
+            i = childNodes.length;
+        while(i--)
+        {
+          var n = childNodes[i];
+          if (n.nodeType == 3) {
+            var html = $.trim(n.nodeValue);
+            if (html)
+            {
+              html = html.replace(/&/g, '&amp;')
+                         .replace(/</g, '&lt;')
+                         .replace(/>/g, '&gt;')
+                         .replace(url1, '$1<a target="_blank" href="http://$2"> $2 </a>$3')
+                         .replace(url2, '$1<a target="_blank" href="$2"> $2 </a>$5');
+              $(n).after(html).remove();
+            }
+          }
+          else if (n.nodeType == 1  &&  !/^(a|button|textarea)$/i.test(n.tagName)) {
+            linkifyThis.call(n);
+          }
+        }
+      };
+
+  $.fn.linkify = function () {
+    return this.each(linkifyThis);
+  };
+
+})(jQuery);
+
 $(document).ready(function() {
 
   var LAT = 13.711901;
@@ -27,15 +63,15 @@ $(document).ready(function() {
   });
 
   function getTweetBoxString (tweet) {
-    return "<a class='box' id='tb-" + tweet.id + "' href='#'>\
+    return "<div class='box' id='tb-" + tweet.id + "'>\
       <table>\
         <tr>\
           <td>\
-            <p>" + tweet.text + "</p>\
+            <p class='textbody'>" + tweet.text + "</p>\
             <div class='poster'>\
               <img src='" + tweet.user.profile_image_url + "' alt='" + tweet.user.name + "' height='42' width='42'>\
               <h5>" + tweet.created_at + "</h5>\
-              <h4>" + tweet.user.name + "</h4>\
+              <h4><a target='_blank' href='http://twitter.com/" + tweet.user.screen_name + "'>" + tweet.user.name + "</h4>\
             </div>\
           </td>\
           <td class='icon'>\
@@ -43,26 +79,27 @@ $(document).ready(function() {
           </td>\
         </tr>\
       </table>\
-    </a>";
+    </div>";
   }
 
   function populateTweets(tweets) {
     var navItem;
     var target = $('.map .info');
 
-    tweets.reverse();
-
     $.each(tweets, function (key, tweet) {
       if (tweet.geo && !$('#tb-' + tweet.id).length) {
         var marker = addMarker(tweet);
         navItem = $(getTweetBoxString(tweet));
         navItem.on('click', function (e) {
-          e.preventDefault();
+          // e.preventDefault();
+          $('.info .box').removeClass('active');
           google.maps.event.trigger(marker, 'click');
         });
-        target.prepend(navItem);
+        target.append(navItem);
       }
     });
+
+    $('p.textbody').linkify();
   }
 
   function addMarker (tweet) {
@@ -77,8 +114,9 @@ $(document).ready(function() {
         </div>"
       },
       click: function () {
-        $('.info a.box').removeClass('active');
-        $('#tb-' + tweet.id).addClass('active').focus();
+        $('.info .box').removeClass('active');
+        $('#tb-' + tweet.id).addClass('active')
+          .find('a').focus();
       }
     });
   }
@@ -134,6 +172,7 @@ $(document).ready(function() {
         $('table.loader').hide();
 
         populateTweets(tweets);
+
         // Recursive call, resulting in fake live reload
         if (recurseFunc) clearTimeout(recurseFunc);
         recurseFunc = setTimeout(getTweets, 1000 * 60 * 0.5); // Minutes

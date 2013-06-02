@@ -1,4 +1,4 @@
- //= require bootstrap
+  //= require bootstrap
  //= require bootstrap-responsive
  //= require_tree .
  //= require_self
@@ -59,13 +59,14 @@ form.form-search {
     border-right: 1px solid #CCC;
     background-color: #fff;
 
-    a.box {
+    .box {
       @include transition(all 0.3s);
       display: block;
       text-decoration: none;
       color: #333;
       border-bottom: 1px solid #CCC;
       outline: 0;
+      cursor: pointer;
 
       &.active,
       &:hover {
@@ -89,7 +90,9 @@ form.form-search {
           vertical-align: middle;
 
           p {
+            width: 185px;
             margin: 0;
+            word-wrap: break-word;
           }
 
           div.poster {
@@ -122,7 +125,7 @@ form.form-search {
             // @include transition(all 0.3s);
             @include opacity(0);
             padding: 0;
-            width: 25px;
+            width: 35px;
             text-align: center;
             background: #e5e5e5;
 
@@ -162,6 +165,7 @@ form.form-search {
 
     .t-result {
       max-width: 200px;
+      word-wrap: break-word;
 
       img {
         float: left;
