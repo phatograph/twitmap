@@ -15,6 +15,42 @@
 //= require GMaps-043
 //= require_tree .
 
+// Define: Linkify plugin
+(function($){
+
+  var url1 = /(^|&lt;|\s)(www\..+?\..+?)(\s|&gt;|$)/g,
+      url2 = /(^|&lt;|\s)(((https?|ftp):\/\/|mailto:).+?)(\s|&gt;|$)/g,
+
+      linkifyThis = function () {
+        var childNodes = this.childNodes,
+            i = childNodes.length;
+        while(i--)
+        {
+          var n = childNodes[i];
+          if (n.nodeType == 3) {
+            var html = $.trim(n.nodeValue);
+            if (html)
+            {
+              html = html.replace(/&/g, '&amp;')
+                         .replace(/</g, '&lt;')
+                         .replace(/>/g, '&gt;')
+                         .replace(url1, '$1<a href="http://$2">$2</a>$3')
+                         .replace(url2, '$1<a href="$2">$2</a>$5');
+              $(n).after(html).remove();
+            }
+          }
+          else if (n.nodeType == 1  &&  !/^(a|button|textarea)$/i.test(n.tagName)) {
+            linkifyThis.call(n);
+          }
+        }
+      };
+
+  $.fn.linkify = function () {
+    return this.each(linkifyThis);
+  };
+
+})(jQuery);
+
 $(document).ready(function() {
 
   var LAT = 13.711901;
@@ -31,7 +67,7 @@ $(document).ready(function() {
         <tr>\
           <td>\
             <img src='" + tweet.user.profile_image_url + "' alt='" + tweet.user.name + "' height='42' width='42'>\
-            <span>" + tweet.text + "</span>\
+            <span class='textbody'>" + tweet.text + "</span>\
             <h5>" + tweet.created_at + "</h5>\
             <h4>" + tweet.user.name + "</h4>\
           </td>\
@@ -110,9 +146,13 @@ $(document).ready(function() {
         $('table.loader').hide();
 
         populateTweets(tweets);
+
         // Recursive call, resulting in fake live reload
         // setTimeout(getTweets, 5000);
-      }
+
+        $('span.textbody').linkify();
+      },
+
     });
   }
 
